@@ -6,6 +6,23 @@ workspace clippy, layers, fmt and the secret scan of all history were clean. Chi
 
 ## What works, and how it was checked
 
+### Fork addendum: ChatGPT-backed Codex on macOS (2026-11-09)
+
+Codex bundled with ChatGPT.app or Codex.app is discovered after a Dock launch,
+without shell-profile changes. Settings → AI offers a background Check action:
+installed, signed in and actual model access are distinct. Login remains in Codex;
+Craft Anything handles no account credentials. 558 AI and 94 GUI unit tests pass
+(four existing ignored), all-target clippy for both crates passes, and a real
+ChatGPT-backed chat and disposable counter build completed through Codex/MCP.
+The custom Apple Silicon app and companion CLI were installed with an original
+bundle/settings rollback copy and verified through the native Check button.
+See [details and limitations](codex.md#fork-verification-2026-11-09).
+After integration with the separate shutdown fix: 795 desktop/AI/GUI tests pass
+with four existing ignored, using four test threads. The new Check action is in
+the headless-parity inventory; the native Check and a fresh real-account chat
+pass in the combined build. The load-sensitive test rerun is documented in
+`docs/codex.md`; no CI pass is implied.
+
 ### macOS Touch Bar shutdown (2026-11-09)
 
 The published 0.37 GUI stack resolves `accesskit_macos` 0.27.2, preserving AppKit's

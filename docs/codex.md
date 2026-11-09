@@ -2,6 +2,73 @@
 
 Craft Anything reaches Codex in two ways, and both have to get past Codex's own tool approval.
 
+## Use your ChatGPT sign-in on macOS
+
+Settings → AI → Found on this computer → Harnesses offers **Codex**. Add it
+and use **Check** in its configured row to check the executable and its sign-in. The check calls only
+`--version` and `login status`; it sends no prompt and does not prove that a model
+or quota is available. Send a message to verify those separately.
+
+An app opened from the Dock does not inherit a terminal's PATH. Codex detection
+and execution both search the known CLI locations inside ChatGPT.app and
+Codex.app, in the user's Applications folder and then the system Applications
+folder, after trying PATH. A program selected explicitly in Settings stays first.
+Only executable files are accepted; the desktop app itself is never launched as
+a command-line agent. No shell profile or symlink is needed.
+
+Codex manages the login. To connect it, run the selected Codex executable with
+`login` in a terminal and choose **Sign in with ChatGPT**. Craft Anything never
+reads, copies or stores the Codex credentials. This is distinct from the OpenAI
+API-key backend: no API key is needed to use a Codex ChatGPT login. A known
+signed-out result stops the connection test/build with sign-in guidance; an
+unrecognised result is reported as unverified, never as connected.
+
+### Fork verification (2026-11-09)
+
+- Rust 1.99.1 on Apple Silicon: the desktop app and companion CLI build with the
+  locked dependencies. This local fork build uses the optimized development
+  profile, not a notarized upstream release.
+- AI library: 558 passed, 3 existing ignored. GUI library: 94 passed, 1 existing
+  ignored. The checks cover bundle lookup and executable permissions, root
+  precedence, signed-out and unknown status, authentication guidance and the
+  connection result in Settings. Ignored tests were not counted as verified.
+- Clippy with warnings denied for both changed crates and all their targets,
+  formatting, layering, lock discipline, translation coverage and secret checks
+  pass. No new dependency or CI change.
+- With PATH limited to the usual Dock directories and only the test app's own
+  configuration isolated, discovery found the bundled Codex and its existing
+  ChatGPT sign-in. A real chat returned the requested marker. A disposable static
+  counter project completed Study → Build → Check → Ready through the actual
+  Codex/MCP integration; its Node test also passed independently.
+- The installed bundle passed strict/deep code-sign verification with a local
+  ad-hoc signature. The native Settings Check button displayed signed-in status.
+  No approval bypass flags, credential copying, global Codex config changes or
+  user-project changes were needed.
+
+Existing limitations remain: native ChatGPT OAuth inside Craft Anything is not
+added here; Codex owns authentication. Session resume/model-picker work is
+separate (upstream PRs #633/#632), and this verification is not a Windows/Linux
+live-account test. A login-status check alone never proves model entitlement or
+remaining quota. An upstream/launcher update can replace a locally installed
+fork; keep its source and original-app/settings rollback copy before updating.
+
+### Final integration with the shutdown fix
+
+The separate Touch Bar dependency fix is documented in
+[macos-touchbar-crash.md](macos-touchbar-crash.md). The combined native build
+passes the Settings Check action and a fresh ChatGPT-backed chat under a
+Dock-style PATH, then reaches normal shutdown without a new crash report.
+The headless-parity inventory explicitly maps the new Check action to
+`craft-anything-cli ai test <name>`; it is not classified as UI-only plumbing.
+
+Final local tests use four test threads to avoid overloading short-deadline
+process fixtures: 795 desktop, AI and GUI tests pass, with four existing ignored.
+One unrestricted run timed out in the pre-existing remote-directory shell
+fixture (two-second deadline); that deadline and its production behavior are
+unchanged. The complete bounded-concurrency run, all-target clippy, formatting,
+layers, locks, translation coverage and secrets pass. No hosted CI result is
+claimed. The local build is ad-hoc-signed, not notarized.
+
 ## Why a tool can be refused
 
 `codex exec` is non-interactive: it has no one to ask, so its approval policy is `never`. A tool
