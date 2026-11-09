@@ -661,9 +661,12 @@ Owner: maintainers · Status: in progress
 
 ### R2.2 More coding agents
 Owner: open · Status: in progress
-- [ ] Discover Codex bundled with ChatGPT/Codex on macOS, check its sign-in without
+- [x] Discover Codex bundled with ChatGPT/Codex on macOS, check its sign-in without
       handling credentials, and verify a local chat/build with the bundled CLI.
       — claimed: dbzx6r, branch `bugfix/r2.2-chatgpt-codex-macos`
+      Verified with a short Dock-style PATH, Codex 0.163.0-alpha.11 signed in with
+      ChatGPT, a real chat, an isolated dependency-free counter build, and the
+      installed Settings → AI → Codex → Check action. See docs/codex.md.
 - [x] A saved agent program path that no longer exists (Codex desktop moves its CLI to a new
       build folder on every update) says so and names the path, instead of "isn't installed or
       isn't on your PATH" (#721); it stays a missing program, so a builder turn isn't retried
