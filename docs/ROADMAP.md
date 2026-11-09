@@ -1050,6 +1050,9 @@ Owner: maintainers · Status: in progress
 ### R2.9 Everyday use: typing, projects, settings
 Owner: maintainers · Status: in progress
 Gaps found while using the app for real projects.
+- [x] Fix the macOS Touch Bar KVO crash on quit by adopting the released accessibility
+      dependency fix, preserving normal shutdown, settings persistence and screen-reader support.
+      — claimed: Codex, branch bugfix/r2.9-macos-touchbar-shutdown
 - [x] Each project chooses, per kind of action, what the builder's approvals get (allow, ask or
       refuse): reading the web, commands, files outside the project, pushing and publishing,
       deleting outside the project, system changes, other tools. Unset kinds follow Auto mode as
