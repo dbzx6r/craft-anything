@@ -1160,3 +1160,11 @@ child. Preserve ordinary output paths and put collisions in an independent input
 directory; keep complete source identities in the manifest. Check both prefix orders and
 same-named input scripts through the real recovery tool, and retain the writer's symlink and
 exclusive-creation checks after selecting a name.
+
+**A passing headless suite did not exercise native macOS shutdown.** Touch Bar AppKit
+observers can abort during AccessKit window teardown after the app's own exit hook returns.
+Keep accessibility enabled and adopt the released observer-preservation fix; an early
+`process::exit` can skip asynchronous preference writes and process-ownership cleanup.
+Test actual Quit and window close on the affected hardware, check new crash reports and
+reopen to verify persistence. A dependency-version guard prevents downgrades but does not
+replace that native test. See `docs/macos-touchbar-crash.md`.
