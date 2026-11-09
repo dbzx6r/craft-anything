@@ -52,6 +52,23 @@ live-account test. A login-status check alone never proves model entitlement or
 remaining quota. An upstream/launcher update can replace a locally installed
 fork; keep its source and original-app/settings rollback copy before updating.
 
+### Final integration with the shutdown fix
+
+The separate Touch Bar dependency fix is documented in
+[macos-touchbar-crash.md](macos-touchbar-crash.md). The combined native build
+passes the Settings Check action and a fresh ChatGPT-backed chat under a
+Dock-style PATH, then reaches normal shutdown without a new crash report.
+The headless-parity inventory explicitly maps the new Check action to
+`craft-anything-cli ai test <name>`; it is not classified as UI-only plumbing.
+
+Final local tests use four test threads to avoid overloading short-deadline
+process fixtures: 795 desktop, AI and GUI tests pass, with four existing ignored.
+One unrestricted run timed out in the pre-existing remote-directory shell
+fixture (two-second deadline); that deadline and its production behavior are
+unchanged. The complete bounded-concurrency run, all-target clippy, formatting,
+layers, locks, translation coverage and secrets pass. No hosted CI result is
+claimed. The local build is ad-hoc-signed, not notarized.
+
 ## Why a tool can be refused
 
 `codex exec` is non-interactive: it has no one to ask, so its approval policy is `never`. A tool
