@@ -965,3 +965,11 @@ different branches reused the same package output path and one saw the other bra
 Give every worktree its own `CARGO_TARGET_DIR`, even when one agent manages both. Cleaning
 the shared engine cache then removed 11.6 GiB of compiled artifacts: avoid shared-cache
 cleanup as a recovery shortcut; use an isolated target directory for further verification.
+
+**A passing headless suite did not exercise native macOS shutdown.** Touch Bar AppKit
+observers can abort during AccessKit window teardown after the app's own exit hook returns.
+Keep accessibility enabled and adopt the released observer-preservation fix; an early
+`process::exit` can skip asynchronous preference writes and process-ownership cleanup.
+Test actual Quit and window close on the affected hardware, check new crash reports and
+reopen to verify persistence. A dependency-version guard prevents downgrades but does not
+replace that native test. See `docs/macos-touchbar-crash.md`.

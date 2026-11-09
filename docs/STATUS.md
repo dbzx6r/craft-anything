@@ -18,6 +18,20 @@ The custom Apple Silicon app and companion CLI were installed with an original
 bundle/settings rollback copy and verified through the native Check button.
 See [details and limitations](codex.md#fork-verification-2026-11-09).
 
+### macOS Touch Bar shutdown (2026-11-09)
+
+The published 0.37 GUI stack resolves `accesskit_macos` 0.27.2, preserving AppKit's
+KVO subclass during window teardown. The affected M1 Touch Bar Mac now reaches
+normal shutdown after menu Quit and window close without a new crash report;
+saved backend/mode settings survive reopening. Accessibility stays enabled and
+the existing save/cancellation lifecycle is unchanged. The dependency guard rejects
+pre-fix/prerelease adapter resolutions. See [the diagnosis and test limitations](macos-touchbar-crash.md).
+Desktop/GUI checks: 236 tests passed, one existing ignored; all-target clippy
+with warnings denied, fmt, layers, locks and the secret check passed locally.
+Windows, Linux, VoiceOver and quitting during an active build have not been run
+live for this dependency migration. This is a local ad-hoc-signed development build,
+not a notarized release.
+
 | Area | State | Verified by |
 |---|---|---|
 | PyInstaller PYZ resources | Legacy data members unpack with their original bytes and names. Empty namespace packages are listed as metadata. Older namespaces with code still unpack as packages. | List- and dictionary-form PYZ fixtures with mixed member types. |
