@@ -158,11 +158,22 @@ pub fn show(app: &mut CraftApp, ui: &mut Ui) {
         }
         ui.label(theme::label_text("Craft Anything", label(12.0, s)).color(t.text).strong());
         #[cfg(not(target_arch = "wasm32"))]
-        ui.menu_button(tr("Help"), |ui| {
-            if ui.button(tr("Check for Updates…")).clicked() {
-                app.updates.check(ui.ctx());
-                ui.close();
+        ui.scope(|ui| {
+            let menu_spacing = ui.spacing().clone();
+            // A normal menu button's minimum height would enlarge this unzoomed macOS row.
+            if NATIVE_FRAME {
+                ui.spacing_mut().interact_size.y = CONTROL * s;
+                ui.spacing_mut().button_padding *= s;
             }
+            let text = if NATIVE_FRAME { theme::label_text(&tr("Help"), label(12.0, s)) } else { RichText::new(tr("Help")) };
+            ui.menu_button(text, |ui| {
+                // Only the bar's button is unzoomed; popup rows keep normal app spacing.
+                *ui.spacing_mut() = menu_spacing.clone();
+                if ui.button(tr("Check for Updates…")).clicked() {
+                    app.updates.check(ui.ctx());
+                    ui.close();
+                }
+            });
         });
         let in_project = app.state.screen == Screen::Project;
         let project = if in_project { app.workspace.as_ref().map(|w| w.manifest.name.clone()) } else { app.view.project.clone() };

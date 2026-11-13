@@ -454,7 +454,7 @@ impl egui::Widget for ProgressBar {
         let (rect, response) = ui.allocate_exact_size(self.size, Sense::hover());
         let fraction = self.fraction.filter(|f| f.is_finite()).map(|f| f.clamp(0.0, 1.0));
         response.widget_info(|| {
-            let mut info = egui::WidgetInfo::new(egui::WidgetType::ProgressIndicator);
+            let mut info = egui::WidgetInfo::new(egui::Role::ProgressIndicator);
             info.value = fraction.map(|f| f64::from(f) * 100.0);
             info
         });
